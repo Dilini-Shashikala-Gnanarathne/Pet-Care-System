@@ -115,6 +115,5 @@
     "start": "node index.js",
     "start-dev": "nodemon index.js"
   },
-  "author": "Chamodya Samarasinghe",
   "license": "ISC"
 }
