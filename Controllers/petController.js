@@ -1,0 +1,76 @@
+import Pet from "../models/PetSchema.js";
+
+export const addPet = async (req, res) => {
+  try {
+    const { name, type, breed, birthDate, weight, photo } = req.body;
+    const ownerId = req.userId;
+
+    const pet = new Pet({
+      name,
+      type,
+      breed,
+      birthDate,
+      weight,
+      photo,
+      ownerId,
+    });
+
+    await pet.save();
+    res
+      .status(201)
+      .json({ success: true, message: "Pet Added Successfully", pet });
+  } catch (err) {
+    res.status(500).jdon({ success: true, message: err.message });
+  }
+};
+
+// View Pets
+export const getUserPets = async (req, res) => {
+  try {
+    const ownerId = req.userId;
+    const pets = await Pet.find({ ownerId });
+    res.status(200).json({ success: true, pets });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+//Update Pet
+export const updatePet = async (req, res) => {
+  try {
+    const { petId } = req.params;
+    const ownerId = req.userId;
+
+    const pet = await Pet.findOne({ _id: petId, ownerId });
+
+    if (!pet)
+      return res.status(404).json({ success: false, message: "Pet Not Found" });
+    //Update Fields Dynamically
+    Object.assign(pet, req.body);
+    await pet.save();
+
+    res
+      .status(200)
+      .json({ success: true, message: "Pet Update Successfully", pet });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+//Delete Pet
+export const deletePet = async (req, res) => {
+  try {
+    const { petId } = req.params;
+    const ownerId = req.userId;
+
+    const pet = await Pet.findOneAndDelete({ _id: petId, ownerId });
+    if (!pet)
+      return res.status(400).json({ success: false, message: "Pet Not Found" });
+
+    res
+      .status(200)
+      .json({ success: true, message: "Pet Deleted Successfully" });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
