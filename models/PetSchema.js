@@ -25,7 +25,7 @@ const PetSchema = new mongoose.Schema(
     },
     ownerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "viewer",
+      ref: "User",
       required: true,
     },
   },
@@ -34,4 +34,4 @@ const PetSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Pet", PetSchema);
+export default mongoose.model("Pet", PetSchema);
