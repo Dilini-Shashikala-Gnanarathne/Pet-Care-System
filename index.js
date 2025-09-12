@@ -6,6 +6,8 @@ import dotenv from "dotenv";
 
 // Route imports
 import authRoute from "./Routes/auth.js";
+import petRoutes from "./Routes/pet.js";
+
 // Middleware imports
 import { errorHandler } from "./middleware/errorHandler.js";
 
@@ -47,6 +49,7 @@ app.use(cors(corsOptions));
 
 // Routes
 app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/pets", petRoutes);
 
 app.use(errorHandler);
 

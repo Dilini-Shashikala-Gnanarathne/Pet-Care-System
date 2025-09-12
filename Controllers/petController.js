@@ -5,6 +5,23 @@ export const addPet = async (req, res) => {
     const { name, type, breed, birthDate, weight, photo } = req.body;
     const ownerId = req.userId;
 
+    // Check if an identical pet already exists for this owner
+    const existingPet = await Pet.findOne({
+      ownerId,
+      name,
+      type,
+      breed,
+      birthDate,
+      weight,
+    });
+
+    if (existingPet) {
+      return res
+        .status(400)
+        .json({ success: false, message: "This pet record already exists." });
+    }
+
+    // If no duplicate, create new one
     const pet = new Pet({
       name,
       type,
@@ -20,7 +37,7 @@ export const addPet = async (req, res) => {
       .status(201)
       .json({ success: true, message: "Pet Added Successfully", pet });
   } catch (err) {
-    res.status(500).jdon({ success: true, message: err.message });
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 
@@ -45,13 +62,13 @@ export const updatePet = async (req, res) => {
 
     if (!pet)
       return res.status(404).json({ success: false, message: "Pet Not Found" });
-    //Update Fields Dynamically
+
     Object.assign(pet, req.body);
     await pet.save();
 
     res
       .status(200)
-      .json({ success: true, message: "Pet Update Successfully", pet });
+      .json({ success: true, message: "Pet Updated Successfully", pet });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
