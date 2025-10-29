@@ -52,6 +52,24 @@ export const getUserPets = async (req, res) => {
   }
 };
 
+//Get Pet By ID
+export const getPetById = async (req, res) => {
+  try {
+    const { petId } = req.params;
+    const ownerId = req.userId;
+
+    const pet = await Pet.findOne({ _id: petId, ownerId });
+
+    if (!pet) {
+      return res.status(404).json({ success: false, message: "Pet Not Found" });
+    }
+
+    res.status(200).json({ success: true, pet });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 //Update Pet
 export const updatePet = async (req, res) => {
   try {
