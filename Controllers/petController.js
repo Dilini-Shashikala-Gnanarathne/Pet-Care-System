@@ -2,7 +2,7 @@ import Pet from "../models/PetSchema.js";
 
 export const addPet = async (req, res) => {
   try {
-    const { name, type, breed, birthDate, weight, photo } = req.body;
+    const { name, type, breed, birthDate, weight, sex, notes } = req.body;
     const ownerId = req.userId;
 
     // Check if an identical pet already exists for this owner
@@ -12,7 +12,9 @@ export const addPet = async (req, res) => {
       type,
       breed,
       birthDate,
+      sex,
       weight,
+      notes,
     });
 
     if (existingPet) {
@@ -27,8 +29,9 @@ export const addPet = async (req, res) => {
       type,
       breed,
       birthDate,
+      sex,
       weight,
-      photo,
+      notes,
       ownerId,
     });
 

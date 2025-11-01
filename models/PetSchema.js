@@ -14,13 +14,19 @@ const PetSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    sex: {
+      type: String,
+      enum: ["Male", "Female"],
+      required: true,
+    },
     birthDate: {
       type: Date,
+      required: true,
     },
     weight: {
       type: Number,
     },
-    photo: {
+    notes: {
       type: String,
     },
     ownerId: {
