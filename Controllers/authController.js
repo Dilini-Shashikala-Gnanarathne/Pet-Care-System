@@ -18,15 +18,6 @@ export const register = async (req, res) => {
   const { email, password, name } = req.body;
 
   try {
-    // let user = null;
-
-    // // Check user existence based on role
-    // if (role === "viewer") {
-    //   user = await User.findOne({ email });
-    // } else if (role === "admin") {
-    //   user = await Admin.findOne({ email });
-    // }
-
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -44,16 +35,6 @@ export const register = async (req, res) => {
     res
       .status(201)
       .json({ success: true, message: "User Created Successfully" });
-    // user =
-    //   role === "viewer"
-    //     ? new User({ name, email, password: hashedPassword, role })
-    //     : new Admin({ name, email, password: hashedPassword, role });
-
-    // await user.save();
-
-    // res
-    //   .status(201)
-    //   .json({ success: true, message: "User successfully created" });
   } catch (error) {
     console.error(error); // Log the error for debugging
     res.status(500).json({
@@ -116,5 +97,14 @@ export const login = async (req, res) => {
   } catch (error) {
     console.error(error); // Log the error for debugging
     res.status(500).json({ status: false, message: "Failed to log in" });
+  }
+};
+
+// User Logout
+export const logout = async (req, res) => {
+  try {
+    res.status(200).json({ success: true, message: "Logged Out Successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };
